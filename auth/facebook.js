@@ -12,6 +12,7 @@ module.exports = {
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
+          req.session["profile"] = profile;
 
           if (req.user) {
             req.user.save((err, user) => {

@@ -8,16 +8,25 @@ module.exports = {
           consumerKey: process.env.LINKEDIN_APP_ID,
           consumerSecret: process.env.LINKEDIN_APP_SECRET,
           callbackURL: "http://localhost:3000/auth/linkedin/callback",
-          profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline'],
+          profileFields: [
+            "id",
+            "first-name",
+            "last-name",
+            "email-address",
+            "headline"
+          ],
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
+          req.session["profile"] = profile;
+
+          console.log(req.session);
+
           if (req.user) {
             req.user.save((err, user) => {
               if (err) {
                 done(err);
               } else {
-                req.user.profile = profile;
                 done(null, user);
               }
             });
